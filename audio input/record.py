@@ -8,6 +8,6 @@ print(f"Recording for {seconds} seconds")
 
 myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
 sd.wait()  # Wait until recording is finished
-write('output2.wav', fs, myrecording)  # Save as WAV file 
+write('200.wav', fs, myrecording)  # Save as WAV file 
 
 print("Finished recording")

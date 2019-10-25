@@ -54,7 +54,7 @@ for i in range(100):  # to it a few times just to see
             print(f"peak: {peak}, freq: {freq}")
             freqYAxis.append(freq)
             timeXAxis.append(endTime - startTime)
-            # filewriter.writerow([peak, freq, endTime - startTime])
+            filewriter.writerow([peak, freq, endTime - startTime])
 
 # plot frequency vs time
 plt.plot(timeXAxis, freqYAxis, 'r')

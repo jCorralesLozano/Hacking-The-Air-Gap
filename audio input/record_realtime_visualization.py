@@ -1,5 +1,6 @@
 import pyaudio
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.fftpack import fft
 import time
 import csv
@@ -21,10 +22,14 @@ csvfile = open('frequency.csv', 'w')
 # create the file writer object
 filewriter = csv.writer(csvfile, delimiter=',',
                         quotechar='|', quoting=csv.QUOTE_MINIMAL)
-filewriter.writerow(['peak', 'actual', 'time'])
+filewriter.writerow(['Peak Amplitude', 'Frequency (Hz)', 'Time (s)'])
 
 # start the timer
 startTime = time.time()
+
+# store frequency and time data
+freqYAxis = []
+timeXAxis = []
 
 # create a numpy array holding a single read of audio data
 for i in range(100):  # to it a few times just to see
@@ -41,11 +46,24 @@ for i in range(100):  # to it a few times just to see
     for freq, magnitude in enumerate(data):
         mag = abs(magnitude)
         if peak == mag and LOWER <= freq <= UPPER:
-            print(f"Peak Frequency: {peak}, Magnitude: {abs(magnitude)}, freq: {freq}")
+            print(f"Peak Amplitude: {peak}, Magnitude: {abs(magnitude)}, freq: {freq}")
             filewriter.writerow([peak, freq, endTime - startTime])
+            freqYAxis.append(freq)
+            timeXAxis.append(endTime - startTime)
         elif peak == mag:
             print(f"peak: {peak}, freq: {freq}")
-            filewriter.writerow([peak, freq, endTime - startTime])
+            freqYAxis.append(freq)
+            timeXAxis.append(endTime - startTime)
+            # filewriter.writerow([peak, freq, endTime - startTime])
+
+# plot frequency vs time
+plt.plot(timeXAxis, freqYAxis, 'r')
+plt.xlabel('Time (seconds)')
+plt.ylabel('Frequency (Hertz)')
+plt.savefig('freq_v_time.png')  # savefig must be called before show
+                                # because show() erases the plot afterwards
+plt.show()
+plt.close()
 
 # close the csv file
 csvfile.close()

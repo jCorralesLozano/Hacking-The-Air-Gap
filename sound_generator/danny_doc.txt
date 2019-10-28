@@ -1,0 +1,81 @@
+8/27/19
+-------
+Before Running:
+LD_LIBRARY_PATH=/usr/local/lib
+export LD_LIBRARY_PATH
+
+When compiling:
+	g++ -std=c++11 -L/usr/local/lib -lrtaudio -I/usr/local/include/rtaudio rtaudio_test.cpp
+
+Programming Decision
+	Using C++
+	Selected RtAudio library for audio input/output
+
+
+How RtAudio and other sound libraries work.
+	- Each OS has one or more native sound api in addition to others that are non-standard or deprecated. The audio library encapsulate the way that each native API works in order for developer to write audio softwrae. 
+	- Sources:
+		- https://stackoverflow.com/questions/41996137/c-c-sound-os-api
+		- http://portaudio.com/docs/v19-doxydocs/api_overview.html
+
+
+Making install in .
+make[1]: Entering directory '/home/danny/Downloads/rtaudio-5.1.0'
+make[2]: Entering directory '/home/danny/Downloads/rtaudio-5.1.0'
+ /usr/bin/mkdir -p '/usr/local/lib'
+ /bin/sh ./libtool   --mode=install /usr/bin/install -c   librtaudio.la '/usr/local/lib'
+libtool: install: /usr/bin/install -c .libs/librtaudio.so.6.0.1 /usr/local/lib/librtaudio.so.6.0.1
+libtool: install: (cd /usr/local/lib && { ln -s -f librtaudio.so.6.0.1 librtaudio.so.6 || { rm -f librtaudio.so.6 && ln -s librtaudio.so.6.0.1 librtaudio.so.6; }; })
+libtool: install: (cd /usr/local/lib && { ln -s -f librtaudio.so.6.0.1 librtaudio.so || { rm -f librtaudio.so && ln -s librtaudio.so.6.0.1 librtaudio.so; }; })
+libtool: install: /usr/bin/install -c .libs/librtaudio.lai /usr/local/lib/librtaudio.la
+libtool: install: /usr/bin/install -c .libs/librtaudio.a /usr/local/lib/librtaudio.a
+libtool: install: chmod 644 /usr/local/lib/librtaudio.a
+libtool: install: ranlib /usr/local/lib/librtaudio.a
+libtool: finish: PATH="/home/danny/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/sbin" ldconfig -n /usr/local/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /usr/local/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the '-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the 'LD_RUN_PATH' environment variable
+     during linking
+   - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to '/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+ /usr/bin/mkdir -p '/usr/local/lib/pkgconfig'
+ /usr/bin/install -c -m 644 rtaudio.pc '/usr/local/lib/pkgconfig'
+ /usr/bin/mkdir -p '/usr/local/include/rtaudio'
+ /usr/bin/install -c -m 644 RtAudio.h rtaudio_c.h '/usr/local/include/rtaudio'
+make[2]: Leaving directory '/home/danny/Downloads/rtaudio-5.1.0'
+make[1]: Leaving directory '/home/danny/Downloads/rtaudio-5.1.0'
+Making install in tests
+make[1]: Entering directory '/home/danny/Downloads/rtaudio-5.1.0/tests'
+  CXX      audioprobe.o
+  CXXLD    audioprobe
+  CXX      playsaw.o
+  CXXLD    playsaw
+  CXX      playraw.o
+  CXXLD    playraw
+  CXX      record.o
+  CXXLD    record
+  CXX      duplex.o
+  CXXLD    duplex
+  CXX      apinames.o
+  CXXLD    apinames
+  CXX      testall.o
+  CXXLD    testall
+  CXX      teststops.o
+  CXXLD    teststops
+make[2]: Entering directory '/home/danny/Downloads/rtaudio-5.1.0/tests'
+make[2]: Nothing to be done for 'install-exec-am'.
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/danny/Downloads/rtaudio-5.1.0/tests'
+make[1]: Leaving directory '/home/danny/Downloads/rtaudio-5.1.0/tests'

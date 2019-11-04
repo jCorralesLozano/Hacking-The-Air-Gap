@@ -1,5 +1,17 @@
-8/27/19
+11/3/19
 -------
+Completed a simple program that generates two different tone.
+Note:
+  - Mono ouput because even if a computer has more than one channel, no reason to output differently for each
+
+
+10/28/19
+--------
+Check out this example:
+	https://gist.github.com/nagachika/165241
+
+10/27/19
+--------
 Before Running:
 LD_LIBRARY_PATH=/usr/local/lib
 export LD_LIBRARY_PATH
@@ -13,11 +25,12 @@ Programming Decision
 
 
 How RtAudio and other sound libraries work.
-	- Each OS has one or more native sound api in addition to others that are non-standard or deprecated. The audio library encapsulate the way that each native API works in order for developer to write audio softwrae. 
+	- Each OS has one or more native sound api in addition to others that are non-standard or deprecated. The audio library encapsulate the way that each native API works in order for developer to write audio software. 
 	- Sources:
 		- https://stackoverflow.com/questions/41996137/c-c-sound-os-api
 		- http://portaudio.com/docs/v19-doxydocs/api_overview.html
 
+----------------------------------------------------------------------------------------------------------------
 
 Making install in .
 make[1]: Entering directory '/home/danny/Downloads/rtaudio-5.1.0'

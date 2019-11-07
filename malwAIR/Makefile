@@ -8,4 +8,4 @@ clean:
 	cd build && rm -f malwAIR
 
 run:
-	cd build && ./malwAIR
+	cd build && ./malwAIR ../input/hello.txt

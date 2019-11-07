@@ -1,5 +1,5 @@
 # MalwAIR
-MalwAIR is an in-progress malware (for research purposes) designed specifically to leak data from an air gapped computer. An air gapped computer is one that is isolated from unsecured networks, such as the Internet. How MalwAIR works is that it captures data and ouputs it through the physical quantities of a computer. Currently, MalwAIR can transmit data through a computer's speaker. By outputting the data through ultrasound, humans would not be able to hear it!
+MalwAIR is an in-progress malware (for research purposes) designed specifically to leak data from an air gapped computer. An air gapped computer is one that is isolated from unsecured networks, such as the Internet. How MalwAIR works is that it captures data and ouputs it through the physical quantities of a computer. Currently, MalwAIR can transmit data through a computer's speaker. By outputting the data at ultrasound, humans would not be able to hear it!
 ### Dependencies
   - [RtAudio](https://www.music.mcgill.ca/~gary/rtaudio/) - A set of C++ classes that provide a common API for realtime audio input/output across a variety of operating systems
 ### Installation and Running

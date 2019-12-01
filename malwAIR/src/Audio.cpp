@@ -26,7 +26,7 @@ Audio::~Audio() {
 
 void Audio::play_tone(int bit) {
 	try {
-		data.bit = bit; // If bit is greater 1, will be treated as 1.
+		data.bit = bit; // If bit is not 0 or 1, will play extra helper tone.
 		dac->startStream();
 	} catch (RtAudioError& e) {
 		throw CannotHackException(e.what());
@@ -66,12 +66,14 @@ void Audio::callback_data_setup() {
 	data.cur = 0;
 	data.wftable_0 = (float*)calloc(data.nFrame, sizeof(float));
 	data.wftable_1 = (float*)calloc(data.nFrame, sizeof(float));
+	data.wftable_extra = (float*)calloc(data.nFrame, sizeof(float));
 
 	for(unsigned int i = 0; i < data.nFrame; i++) {
 		// y(t) = sin(2*pi*f*t)
 		// t = i / sampling_rate
-		data.wftable_0[i] = sin(M_PI * 2 * 440 * i / sampling_rate);
-		data.wftable_1[i] = sin(M_PI * 2 * 6000 * i / sampling_rate);
+		data.wftable_0[i] = sin(M_PI * 2 * 20000 * i / sampling_rate);
+		data.wftable_1[i] = sin(M_PI * 2 * 20100 * i / sampling_rate);
+		data.wftable_extra[i] = sin(M_PI * 2 * 20200 * i / sampling_rate);
 	}
 }
 
@@ -94,12 +96,22 @@ int Audio::rtaudio_callback(void* outbuf, void* inbuf, unsigned int nFrames,
 			buf += sz;
 			remainFrames -= sz;
 		}
-	} else {
+	} else if (data->bit == 1) {
 		while (remainFrames > 0) {
 			unsigned int sz = data->nFrame - data->cur;
 			if (sz > remainFrames)
 				sz = remainFrames;
 			memcpy(buf, data->wftable_1+(data->cur), sz * sizeof(float));
+			data->cur = (data->cur + sz) % data->nFrame;
+			buf += sz;
+			remainFrames -= sz;
+		}
+	} else {
+		while (remainFrames > 0) {
+			unsigned int sz = data->nFrame - data->cur;
+			if (sz > remainFrames)
+				sz = remainFrames;
+			memcpy(buf, data->wftable_extra+(data->cur), sz * sizeof(float));
 			data->cur = (data->cur + sz) % data->nFrame;
 			buf += sz;
 			remainFrames -= sz;

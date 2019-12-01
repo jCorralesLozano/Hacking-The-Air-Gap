@@ -31,12 +31,15 @@ int main(int argc, char** argv) {
 		// Deconstruct the byte read into bits
 		for (int i = 7; i >= 0; --i) {
 			// Output a tone for each bit with a .5 second pause in-between each
-			// std::cout << ((c >> i) & 1);
+			std::cout << ((c >> i) & 1);
 			audio_hack.play_tone((c >> i) & 1);
-			usleep(500000);
+			usleep(75000);
+			audio_hack.stop_tone();
+			audio_hack.play_tone(2);
+			usleep(75000);
 			audio_hack.stop_tone();
 		}
-		// std::cout << std::endl;
+		std::cout << std::endl;
 	}
 
 	in_file.close();

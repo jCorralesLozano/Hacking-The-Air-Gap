@@ -25,6 +25,7 @@ private:
 		unsigned int nFrame;	// Frame Number of Wave Table
 		float *wftable_0;		// Wave Form Table(interleaved) for bit 0
 		float *wftable_1;		// Wave Form Table(interleaved) for bit 1
+		float *wftable_extra; 	// Wave Form Table(interleaved) extra for anything
 		unsigned int cur;		// current index of WaveFormTable(in Frame)
 	} CallbackData;
 

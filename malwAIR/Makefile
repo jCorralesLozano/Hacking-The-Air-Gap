@@ -1,4 +1,4 @@
-CXXFLAGS = -Wall -std=c++11 -L/usr/local/lib -lrtaudio -I/usr/local/include/rtaudio
+CXXFLAGS = -Wall -std=c++14 -L/usr/local/lib -lrtaudio -I/usr/local/include/rtaudio
 FILES = src/main.cpp src/Audio.cpp
 
 malwAIR:

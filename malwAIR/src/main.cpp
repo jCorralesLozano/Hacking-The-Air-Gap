@@ -10,7 +10,6 @@ int main(int argc, char** argv) {
 	// char input;
 	// std::cout << "\nPress <enter> to quit.\n";
 	// std::cin.get(input);
-	// audio_hack.stop_tone();
 
 
 	// If no file is given as input argument, exit
@@ -19,6 +18,7 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 	
+
 	Audio audio_hack;
 	std::ifstream in_file;
 
@@ -26,22 +26,32 @@ int main(int argc, char** argv) {
 	in_file.open(argv[1], std::ifstream::in | std::ifstream::binary);
 	char c;
 
-	// Smallest reading size is 1 byte at a time
+	// Start Bridge to retrieve data
+	audio_hack.play_tone(16);
+	usleep(1000000);
+	audio_hack.stop_tone();
+
+	// Read one byte at a time
 	while (in_file.get(c)) {
-		// Deconstruct the byte read into bits
-		for (int i = 7; i >= 0; --i) {
-			// Output a tone for each bit with a .5 second pause in-between each
-			std::cout << ((c >> i) & 1);
-			audio_hack.play_tone((c >> i) & 1);
-			usleep(75000);
-			audio_hack.stop_tone();
-			audio_hack.play_tone(2);
-			usleep(75000);
-			audio_hack.stop_tone();
-		}
-		std::cout << std::endl;
+		// Deconstruct the byte to two hexadecimal value
+		int first = c >> 4;
+		int second = c & 0b00001111; // Binary literal is a C++14 thing
+
+		audio_hack.play_tone(first + 18);	// Offset by 18 to play designated freq tone + the special tone
+		usleep(1000000);
+		audio_hack.stop_tone();
+
+		audio_hack.play_tone(second);
+		usleep(1000000);
+		audio_hack.stop_tone();
 	}
 
 	in_file.close();
+
+	// Stop Bridge from waiting for data
+	audio_hack.play_tone(17);
+	usleep(1000000);
+	audio_hack.stop_tone();
+
 	return 0;
 }

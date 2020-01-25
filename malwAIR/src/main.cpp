@@ -1,7 +1,8 @@
 #include "include/Audio.h"
 #include <fstream>
 #include <iostream>
-#include <unistd.h>
+// #include <unistd.h>
+#include <windows.h>
 
 int main(int argc, char** argv) {
 
@@ -28,7 +29,8 @@ int main(int argc, char** argv) {
 
 	// Start Bridge to retrieve data
 	audio_hack.play_tone(16);
-	usleep(1000000);
+	// usleep(1000000);
+	Sleep(1);
 	audio_hack.stop_tone();
 
 	// Read one byte at a time
@@ -38,11 +40,13 @@ int main(int argc, char** argv) {
 		int second = c & 0b00001111; // Binary literal is a C++14 thing
 
 		audio_hack.play_tone(first + 18);	// Offset by 18 to play designated freq tone + the special tone
-		usleep(1000000);
+		// usleep(1000000);
+		Sleep(1);
 		audio_hack.stop_tone();
 
 		audio_hack.play_tone(second);
-		usleep(1000000);
+		// usleep(1000000);
+		Sleep(1);
 		audio_hack.stop_tone();
 	}
 
@@ -50,7 +54,8 @@ int main(int argc, char** argv) {
 
 	// Stop Bridge from waiting for data
 	audio_hack.play_tone(17);
-	usleep(1000000);
+	// usleep(1000000);
+	Sleep(1);
 	audio_hack.stop_tone();
 
 	return 0;

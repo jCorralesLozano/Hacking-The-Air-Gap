@@ -4,7 +4,7 @@
 MalwAIR isn't working properly with Ubuntu either, same reason.
 
 Testing on Windows:
-	RtAudio is lacking support so the following steps are necessary
+	RtAudio is lacking support. These were the steps I took
 		1. Install MinGW: Packages I selected were mingw-developer-toolkit-bin, mingw32-base-bin, mingw32-gcc-g++-bin, msys-base-bin
 		2. Download RtAudio
 		3. Inside MSYS command line (C:\MinGW\msys\1.0\msys.bat), follow same step to install RtAudio
@@ -17,7 +17,7 @@ Testing on Windows:
 			make
 			make run
 
-TODO: create build folder in the Github repo, or change Makefile to create the folder if one doesn't exist
+Create build folder in the Github repo, and use .gitignore to ignore everything inside the folder. Makefile requires a build folder, so this just make it more convenient for end users
 
 -------
 1/23/20

@@ -2,7 +2,7 @@ CXXFLAGS = -Wall -std=c++14 -L/usr/local/lib -lrtaudio -I/usr/local/include/rtau
 FILES = src/main.cpp src/Audio.cpp
 
 malwAIR:
-	g++ $(CXXFLAGS) $(FILES) -o build/malwAIR
+	g++  -o build/malwAIR $(FILES) $(CXXFLAGS)
 
 clean:
 	cd build && rm -f malwAIR

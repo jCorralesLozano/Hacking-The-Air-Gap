@@ -3,7 +3,9 @@
 
 #include "CannotHackException.h"
 #include "RtAudio.h"
-#include <math.h>
+#define _USE_MATH_DEFINES
+#include <cmath>
+// #include <math.h>
 #include <cstring>
 
 

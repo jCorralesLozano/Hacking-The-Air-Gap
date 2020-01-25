@@ -1,4 +1,4 @@
-### MalwAIR
+# MalwAIR
 ---
 MalwAIR is an in-progress malware (for research purposes) designed specifically to leak data from an air gapped computer, a computer that is isolated from unsecured networks, such as the Internet. At the high level, MalwAIR outputs data in the form of ultrasound from the speaker of a computer. The plan for MalwAIR is also to read in ultrasound from the microphone of a computer in order to allow bi-directional communication with an external system.  
 

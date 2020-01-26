@@ -6,12 +6,17 @@
 
 int main(int argc, char** argv) {
 
-	// // Section for debugging.
-	// audio_hack.play_tone(0);
-	// char input;
-	// std::cout << "\nPress <enter> to quit.\n";
-	// std::cin.get(input);
-
+	// Section for debugging
+	// Audio audio_hack;
+	// for (int i = 0; i < 34; ++i) {
+	// 	if (i != 16 && i != 17) {
+	// 		audio_hack.play_tone(i);
+	// 		char input;
+	// 		std::cout << "\nPlaying tone: " << i << " Hz. Press <enter> to go to next tone.\n";
+	// 		std::cin.get(input);
+	// 		audio_hack.stop_tone();
+	// 	}
+	// }
 
 	// If no file is given as input argument, exit
 	if (argc < 2) {
@@ -19,7 +24,6 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 	
-
 	Audio audio_hack;
 	std::ifstream in_file;
 
@@ -30,7 +34,7 @@ int main(int argc, char** argv) {
 	// Start Bridge to retrieve data
 	audio_hack.play_tone(16);
 	// usleep(1000000);
-	Sleep(1);
+	Sleep(300);
 	audio_hack.stop_tone();
 
 	// Read one byte at a time
@@ -41,12 +45,12 @@ int main(int argc, char** argv) {
 
 		audio_hack.play_tone(first + 18);	// Offset by 18 to play designated freq tone + the special tone
 		// usleep(1000000);
-		Sleep(1);
+		Sleep(300);
 		audio_hack.stop_tone();
 
 		audio_hack.play_tone(second);
 		// usleep(1000000);
-		Sleep(1);
+		Sleep(300);
 		audio_hack.stop_tone();
 	}
 
@@ -55,7 +59,7 @@ int main(int argc, char** argv) {
 	// Stop Bridge from waiting for data
 	audio_hack.play_tone(17);
 	// usleep(1000000);
-	Sleep(1);
+	Sleep(300);
 	audio_hack.stop_tone();
 
 	return 0;

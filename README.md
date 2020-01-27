@@ -2,7 +2,7 @@
 In today’s digital ecosystem, hackers are a concerning threat. It is widely known that any system connected to the Internet is vulnerable. But what about an “air-gapped” computer? One that is not directly connected to the Internet or any other system that is connected to the Internet. The goal of this project is to demonstrate data leakage from an air-gapped computer via ultrasound. We envision an external system with WiFi for outside access that can bidirectionally communicate with the hacked computer efficiently and accurately. We hope that our ultrasound communication protocol will have other usages too.
 ## Design
 
-![](/miscellaneous/images/diagram.jpg?raw=true "diagram")
+![](miscellaneous/images/diagram.JPG?raw=true "diagram")
 
 ## Ultrasound Communication Protocol
 ![](/miscellaneous/images/ultrasound_communication_protocol.jpg?raw=true "protocol")

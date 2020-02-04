@@ -1,0 +1,3 @@
+flask db migrate -m {insert some comment} 
+[*] inspect generated scripts to ensure they will work properly
+flask db upgrade

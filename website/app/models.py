@@ -13,6 +13,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # choose what to display if printing a User object
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -21,6 +22,9 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def get_posts(self):
+        return Post.query.filter_by(user_id=self.id)
 
     # use gravatar to generate avatars for users without storing them locally
     def avatar(self, size):

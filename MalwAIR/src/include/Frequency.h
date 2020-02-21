@@ -24,24 +24,48 @@
 
 
 // Audible
-#define FREQ_0       18017
-#define FREQ_1       18060
-#define FREQ_2       18103
-#define FREQ_3       18146
-#define FREQ_4       18189
-#define FREQ_5       18232
-#define FREQ_6       18275
-#define FREQ_7       18318
-#define FREQ_8       18361
-#define FREQ_9       18404
-#define FREQ_A       18447
-#define FREQ_B       18490
-#define FREQ_C       18533
-#define FREQ_D       18576
-#define FREQ_E       18619
-#define FREQ_F       18662
-#define FREQ_START   18705
-#define FREQ_STOP    18748
-#define FREQ_SPECIAL 18791
+// #define FREQ_0       18017
+// #define FREQ_1       18060
+// #define FREQ_2       18103
+// #define FREQ_3       18146
+// #define FREQ_4       18189
+// #define FREQ_5       18232
+// #define FREQ_6       18275
+// #define FREQ_7       18318
+// #define FREQ_8       18361
+// #define FREQ_9       18404
+// #define FREQ_A       18447
+// #define FREQ_B       18490
+// #define FREQ_C       18533
+// #define FREQ_D       18576
+// #define FREQ_E       18619
+// #define FREQ_F       18662
+// #define FREQ_START   18705
+// #define FREQ_STOP    18748
+// #define FREQ_SPECIAL 18791
+
+// Really Audible
+#define FREQ_0       100
+#define FREQ_1       200
+#define FREQ_2       300
+#define FREQ_3       400
+#define FREQ_4       500
+#define FREQ_5       600
+#define FREQ_6       700
+#define FREQ_7       800
+#define FREQ_8       900
+#define FREQ_9       1000
+#define FREQ_A       1100
+#define FREQ_B       1200
+#define FREQ_C       1300
+#define FREQ_D       1400
+#define FREQ_E       1500
+#define FREQ_F       1600
+#define FREQ_START   1700
+#define FREQ_STOP    1800
+#define FREQ_SPECIAL 1900
+
+// 
+
 
 #endif // FREQUENCY_H

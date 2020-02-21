@@ -15,16 +15,15 @@ public:
 	Audio();
 	~Audio();
 	void play_tone(int value);
-	void stop_tone();
 
 private:
-	void output_stream_setup();
+	void stream_setup();
 	void callback_data_setup();	// Tone for bit 0 (440Hz) and 1 (6000Hz) created here
 	static int rtaudio_callback(void* outbuf, void* inbuf, unsigned int nFrames,
 		 double streamtime, RtAudioStreamStatus status, void* userdata);
 
 	typedef struct {
-		// TODO: change name of var bit
+		// TODO: change name of var bit, put wftable pointers into an array
 		unsigned int bit;			// 0 or 1, play a different tone for each
 		unsigned int nFrame;		// Frame Number of Wave Table
 		unsigned int nChannel;		// Channel Number
@@ -68,7 +67,8 @@ private:
 	// TODO: Can I just hardcode this common sampling rate?
 	unsigned int sampling_rate = 44100;
 	CallbackData data;
-	RtAudio* dac;
+	RtAudio* adac;
+	RtAudio::StreamParameters* inParam;
 	RtAudio::StreamParameters* outParam;
 
 };

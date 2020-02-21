@@ -2,6 +2,7 @@
 
 #include <Audio.h>
 #include <Wire.h>
+#include "Frequency.h"
 
 // Global Variables
 bool start_enable     = false;  // When true, start frequency is detected, and data flow can begin. Stop frequency detection will reset to false 
@@ -31,7 +32,7 @@ int find_dominant_frequency_index() {
   float dominant_amp_value = 0;
   int dominant_freq_index = 0;
   
-  for (int i = 465; i < 483; ++i) {
+  for (int i = FREQ_0_INDEX; i < FREQ_SPECIAL_INDEX; ++i) {
     float amp_value = fft1024.read(i);
     // amp_value > 0.0001 for checking that frequency is at least picked up by microphone
     // TODO: play around with constraint, 0.0001 seems to be good for volume at 50%
@@ -47,37 +48,37 @@ int find_dominant_frequency_index() {
 
 byte hz_to_binary(int freq_index) {
   switch (freq_index) {
-    case 465:
+    case FREQ_0_INDEX:
       return B00000000;
-    case 466:
+    case FREQ_1_INDEX:
       return B00000001;
-    case 467:
+    case FREQ_2_INDEX:
       return B00000010;
-    case 468:
+    case FREQ_3_INDEX:
       return B00000011;
-    case 469:
+    case FREQ_4_INDEX:
       return B00000100;
-    case 470:
+    case FREQ_5_INDEX:
       return B00000101;
-    case 471:
+    case FREQ_6_INDEX:
       return B00000110;
-    case 472:
+    case FREQ_7_INDEX:
       return B00000111;
-    case 473:
+    case FREQ_8_INDEX:
       return B00001000;
-    case 474:
+    case FREQ_9_INDEX:
       return B00001001;
-    case 475:
+    case FREQ_A_INDEX:
       return B00001010;
-    case 476:
+    case FREQ_B_INDEX:
       return B00001011;
-    case 477:
+    case FREQ_C_INDEX:
       return B00001100;
-    case 478:
+    case FREQ_D_INDEX:
       return B00001101;
-    case 479:
+    case FREQ_E_INDEX:
       return B00001110;
-    case 480:
+    case FREQ_F_INDEX:
       return B00001111;
     default:
       // TODO: it will enter here when the start bit is read
@@ -115,26 +116,6 @@ void loop() {
   bool special_bit_on = false;
 
   if (fft1024.available()) {
-    // Index 465 = 20038 Hz = 0x0
-    // Index 466 = 20081 Hz = 0x1
-    // Index 467 = 20124 Hz = 0x2
-    // Index 468 = 20167 Hz = 0x3
-    // Index 469 = 20210 Hz = 0x4
-    // Index 470 = 20253 Hz = 0x5
-    // Index 471 = 20296 Hz = 0x6
-    // Index 472 = 20339 Hz = 0x7
-    // Index 473 = 20382 Hz = 0x8
-    // Index 474 = 20425 Hz = 0x9
-    // Index 475 = 20468 Hz = 0xA
-    // Index 476 = 20511 Hz = 0xB
-    // Index 477 = 20554 Hz = 0xC
-    // Index 478 = 20597 Hz = 0xD
-    // Index 479 = 20640 Hz = 0xE
-    // Index 480 = 20683 Hz = 0xF
-    // Index 481 = 20726 Hz = Start frequency // TODO: I don't like start/stop frequencies, would be better if there is a handshaking protocol
-    // Index 482 = 20769 Hz = Stop frequency
-    // Index 483 = 20812 Hz = Special frequency - Used for distinguish between first half of byte (high) and second half (low)
-   
     // Compute the "main" frequency value
     data_freq_index = find_dominant_frequency_index();
 
@@ -143,11 +124,11 @@ void loop() {
     if (data_freq_index == 0) {
       ++mode_track[0];
     } else {
-      ++mode_track[data_freq_index - 464];
+      ++mode_track[data_freq_index - (FREQ_0_INDEX - 1)];
     }
 
     // Same idea with the special bit
-    if (fft1024.read(483) > 0.0001) { // Play around with constraint, 0.0001 seems to be good for volume at 50%
+    if (fft1024.read(FREQ_SPECIAL_INDEX) > 0.0001) { // Play around with constraint, 0.0001 seems to be good for volume at 50%
       ++special_bit_track[1];
     } else {
       ++special_bit_track[0];
@@ -161,7 +142,7 @@ void loop() {
       for (int i = 1; i < 19; ++i) {
         int count = mode_track[i];
         if (count > mode_count) {
-          mode_freq_index = i + 464;
+          mode_freq_index = i + (FREQ_0_INDEX - 1);
           mode_count = count;
         }
         mode_track[i] = 0;
@@ -185,11 +166,11 @@ void loop() {
 
 
     if (start_enable) {
-      if (mode_freq_index == 482) { // Stop data transmission
+      if (mode_freq_index == FREQ_STOP_INDEX) { // Stop data transmission
         start_enable = false;
         data_byte = 0;
           Serial1.write("Stop");  // TODO: Better start/stop serial
-      } else if (465 <= mode_freq_index && mode_freq_index <= 480) { // TODO: Ideally, this else statement would always execute if the if statement doesn't
+      } else if (FREQ_0_INDEX <= mode_freq_index && mode_freq_index <= FREQ_F_INDEX) { // TODO: Ideally, this else statement would always execute if the if statement doesn't
         byte half_byte = hz_to_binary(mode_freq_index);
         // TODO: handle when data_freq_index isn't within the expected range, 465 to 480 inclusive
         // TODO: big or little endian?
@@ -213,7 +194,7 @@ void loop() {
         }
       }
     }
-    else if (mode_freq_index == 481) {
+    else if (mode_freq_index == FREQ_START_INDEX) {
       start_enable = true;
         Serial1.write("Start");
     }

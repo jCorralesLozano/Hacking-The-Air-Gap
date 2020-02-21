@@ -5,21 +5,24 @@ Audio::Audio() {
 	// Construct a new RtAudio object. If no underlying audio API support 
 	// is compiled, an exception will be thrown.
 	try {
-		dac = new RtAudio();
+		adac = new RtAudio();
 	} catch (RtAudioError& e) {
 		throw CannotHackException("Audio: no underlying audio API support");
 	}
 
-	output_stream_setup();
+	stream_setup();
 	callback_data_setup();
+	adac->startStream();
 }
 
 
 Audio::~Audio() {
-	if (dac->isStreamOpen())
-		dac->closeStream();
+	adac->stopStream();
+	if (adac->isStreamOpen())
+		adac->closeStream();
 
-	delete dac;
+	delete adac;
+	delete inParam;
 	delete outParam;
 }
 
@@ -30,32 +33,26 @@ void Audio::play_tone(int value) {
 						  // 16-31 plays equivalent hexadecimal tone for second hex (4 LSBs)
 						  // 32 plays start
 						  // 33 plays stop
-		dac->startStream();
+		// adac->startStream();
 	} catch (RtAudioError& e) {
 		throw CannotHackException(e.what());
 	}
 }
 
 
-void Audio::stop_tone() {
-	try {
-		dac->stopStream();
-	} catch (RtAudioError& e) {
-		throw CannotHackException(e.what());
-	}
-}
-
-
-void Audio::output_stream_setup() {
+void Audio::stream_setup() {
+	inParam = new RtAudio::StreamParameters();
 	outParam = new RtAudio::StreamParameters();
-	outParam->deviceId = dac->getDefaultOutputDevice(); // Get the default audio device
+
+	inParam->deviceId = adac->getDefaultInputDevice();
+	inParam->nChannels = 2; // Maybe one is all that is needed
+	outParam->deviceId = adac->getDefaultOutputDevice();
 	outParam->nChannels = 2; // Stereo, one channel for special frequency
 
-	// Specify number of sample frames that will be written to device per write operation
 	unsigned int bufferFrames = 256;
 
 	try {
-		dac->openStream(outParam, NULL, RTAUDIO_FLOAT32, sampling_rate,
+		adac->openStream(outParam, inParam, RTAUDIO_FLOAT32, sampling_rate,
 						&bufferFrames, rtaudio_callback, &data);
 	} catch (RtAudioError& e) {
 		throw CannotHackException(e.what());
@@ -206,10 +203,14 @@ void Audio::callback_data_setup() {
 }
 
 
-// TODO: for parameter userdata, the Callbackdata is already a private variable
 int Audio::rtaudio_callback(void* outbuf, void* inbuf, unsigned int nFrames, 
 	double streamtime, RtAudioStreamStatus status, void* userdata)
 {
+	// TODO: Throw an exception?
+	// if (status)
+	// 	std::cout << "Stream over/underflow detected!" << std::endl;
+
+	// Output audio
 	float* buf = (float*)outbuf;
 	CallbackData* data = (CallbackData*)userdata;
 	unsigned int remainFrames = nFrames;
@@ -331,6 +332,9 @@ int Audio::rtaudio_callback(void* outbuf, void* inbuf, unsigned int nFrames,
 		buf += sz * data->nChannel;
 		remainFrames -= sz;
 	}
+
+	// Process audio input
+	// cout << 
 
 	return 0;
 }

@@ -3,6 +3,17 @@
 {% block content %}
    <body>
         <h1>Hello, {{current_user.username}}!</h1>
+        <form method="post">
+            {{form.hidden_tag()}}
+            <p>
+                {{form.post.label}}<br>
+                {{form.post(cols=32, rows=4)}}<br>
+                {% for error in form.post.errors %}
+                <span style="color:red">[{{error}}]</span>
+                {% endfor %}
+            </p>
+            <p>{{form.submit()}}</p>
+        </form>
         {% for post in posts %}
         <div><p>{{post.author.username}} says: <b>{{post.body}}</b></p></div>
         {% endfor %}

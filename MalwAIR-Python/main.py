@@ -9,6 +9,7 @@ if __name__ == "__main__":
 			packet_layer.send_packet(data)
 			print("Packet sent")
 			data = f.read(255)
+	input()
 
 
 	# for i in range(10):

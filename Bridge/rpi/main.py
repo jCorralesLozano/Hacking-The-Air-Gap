@@ -1,20 +1,19 @@
-import serial
+import PacketLayer
 
 if __name__ == '__main__':
-	display = False;
-	ser = serial.Serial('/dev/ttyS0', 115200, timeout=0)
-	ser.flush()
+	packetLayer = PacketLayer.PacketLayer()
+	cmd = str()
+
 	while True:
-		if ser.in_waiting > 0:
-			line = ser.readline().decode('utf-8', errors='ignore').rstrip()
-
-			# if (line == "Start"):
-			# 	print("Start")
-			# 	display = True
-			# elif (line == "Stop"):
-			# 	display = False;
-			# 	print("Stop")
-			# elif (display):
-			# 	print(line)
-
-			print(line)
+		cmd = input ("Enter a command (pwd, ls, cd [dir], get [file path], quit): ")
+		if (cmd == "quit"):
+			print("Session End")
+			break
+		elif (cmd.split(" ")[0] in ["pwd", "ls", "cd", "get"]):
+			print("Sending command: " + cmd)
+			if (not byteLayer.send_packet(cmd)):
+				# TODO: Allow commands with length over 255 characters
+				print("Command needs to less than 255 characters")
+			byteLayer.receive_packet()
+		else:
+			print("Command " + cmd + " not supported.")

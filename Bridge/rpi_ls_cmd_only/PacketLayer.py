@@ -1,49 +1,42 @@
+import serial
 from crc16 import crc16xmodem
-import ByteLayer
 import Macros
-import time
 
 class PacketLayer():
 
-	def __init__(self, callback_app_layer):
-		self.callback_app_layer = callback_app_layer
-		self.byte_layer = ByteLayer.ByteLayer(self.receive_command)
+	def __init__(self):
+		self.byte_layer = ByteLayer.ByteLayer(self.check_if_packet)
 		self.bytes_received = b''
 
 
-	def send_packet(self, data: bytes) -> bool:
-		length = len(data)
+	# def send_packet(self, data: bytes) -> bool:
+	# 	length = len(data)
 
-		# Check that data is less than or equal to 255 bytes
-		if (length > 255):
-			return False
+	# 	# Check that data is less than or equal to 255 bytes
+	# 	if (length > 255):
+	# 		return False
 
-		# Start byte
-		self.byte_layer.send_byte(Macros.START_BYTE)
+	# 	# Start byte
+	# 	self.byte_layer.send_byte(Macros.START_BYTE)
 
-		# Length
-		self.byte_layer.send_byte(length)
+	# 	# Length
+	# 	self.byte_layer.send_byte(length)
 
-		# Data
-		for b in data:
-			print(str(chr(b)))
-			self.byte_layer.send_byte(b)
+	# 	# Data
+	# 	for b in data:
+	# 		self.byte_layer.send_byte(b)
 
-		# Checksum
-		crc = crc16xmodem(bytes([Macros.START_BYTE, length]) + data)
-		crc_top = crc >> 8
-		crc_bottom = crc & 0xFF
-		self.byte_layer.send_byte(crc_top)
-		self.byte_layer.send_byte(crc_bottom)
+	# 	# Checksum
+	# 	crc = crc16xmodem(bytes([Macros.START_BYTE, length]) + data)
+	# 	crc_top = crc >> 8
+	# 	crc_bottom = crc & 0xFF
+	# 	self.byte_layer.send_byte(crc_top)
+	# 	self.byte_layer.send_byte(crc_bottom)
 
-		# Stop byte
-		self.byte_layer.send_byte(Macros.STOP_BYTE)
+	# 	# Stop byte
+	# 	self.byte_layer.send_byte(Macros.STOP_BYTE)
 
-		return True
-
-
-	def receive_command(self, command):
-		self.callback_app_layer(command)
+	# 	return True
 
 
 	def check_if_packet(byte: bytes):

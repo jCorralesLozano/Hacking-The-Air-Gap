@@ -7,7 +7,7 @@ import Macros
 
 class ByteLayer():
 
-	def __init__(self, callback_packet_layer, sample_rate = 44100, tone_period = 0.05):
+	def __init__(self, callback_packet_layer, sample_rate = 44100, tone_period = 0.06):
 		self.sample_rate = 44100
 		self.callback_packet_layer = callback_packet_layer
 		self.tone_period = tone_period	# Time to play a tone for, in seconds
@@ -41,20 +41,33 @@ class ByteLayer():
 		self.sending_byte = True
 		first, second = self._deconstruct_byte_into_two_freq(byte)
 
-		# Output first tone, one channel is "data tone", and other is "MSBs tone"
-		self.frequency_channel_1 = first
-		self.frequency_channel_2 = Macros.FREQ_SPECIAL
+		# Output delimiter tone
+		self.frequency_channel_1 = Macros.FREQ_DELIMITER
+		self.frequency_channel_2 = Macros.FREQ_DELIMITER
 		time.sleep(self.tone_period)
 
-		# Output second tone, both channels same
+		# Output first hex data tone, one channel is "data tone", and other is "MSBs tone"
+		self.frequency_channel_1 = first
+		self.frequency_channel_2 = first
+		time.sleep(self.tone_period)
+
+		# Output delimiter tone
+		self.frequency_channel_1 = Macros.FREQ_DELIMITER
+		self.frequency_channel_2 = Macros.FREQ_DELIMITER
+		time.sleep(self.tone_period)
+
+		# Output second hex data tone
 		self.frequency_channel_1 = second
 		self.frequency_channel_2 = second
 		time.sleep(self.tone_period)
-		
+
 		self.frequency_channel_1 = 0
 		self.frequency_channel_2 = 0
 		self.sending_byte = False
 
+
+	def receive_byte(self):
+		pass
 
 	def _stream_setup(self):
 		sd.default.samplerate = self.sample_rate
@@ -91,13 +104,17 @@ class ByteLayer():
 				if (dominant_amp_value < fft_output[i]):
 					dominant_amp_value = fft_output[i]
 					dominant_freq_index = i
-			print("Dominant Freq: " + str(dominant_freq_index*50) + " Amp: " + str(dominant_amp_value) + " Special: " + str(fft_output[40]))
+			print("Dominant Freq: " + str(dominant_freq_index*50) + "\tAmplitude: " + str(dominant_amp_value))
+			# TODO: Just testing for one tone right now 2640 Hz is what is being sent from Bridge
+			if (dominant_freq_index == 53):
+				self.callback_packet_layer("ls")
+				self.sending_byte = True
 
 
 	def _deconstruct_byte_into_two_freq(self, byte: int):
 		first = byte >> 4
 		second = byte & 0b00001111
 		print(byte)
-		print(first)
-		print(second)
+		print('\t', first)
+		print('\t', second)
 		return (self.byte_to_freq[first], self.byte_to_freq[second])
